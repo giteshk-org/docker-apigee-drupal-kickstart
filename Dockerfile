@@ -25,6 +25,8 @@ ENV DRUPAL_DATABASE_NAME=devportal \
     ADMIN_PASS=admin \
     AUTO_INSTALL_PORTAL=false
 
+VOLUME /mnt/fileshare
+
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
@@ -32,8 +34,21 @@ RUN apt-get update && apt-get install -y \
         libxml2-dev \
         git zip unzip default-mysql-client\
         curl \
+        lsb-release gnupg \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd bcmath opcache xmlrpc pdo_mysql
+
+# Install gcsfuse and nfs packages
+# Once gcsfuse-bullseye is released we can switch this over
+# gcsFuseRepo=gcsfuse-`lsb_release -c -s`;
+# hardcoding to use gcsfuse-buster
+RUN gcsFuseRepo="gcsfuse-buster"; \
+      echo "deb http://packages.cloud.google.com/apt $gcsFuseRepo main" | \
+      tee /etc/apt/sources.list.d/gcsfuse.list; \
+      curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
+      apt-key add -; \
+      apt-get update; \
+      apt-get install -y gcsfuse nfs-kernel-server nfs-common && apt-get clean;
 
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
     && sed -i 's/\(^max_execution_time = 30$\)/max_execution_time = 300/g' /usr/local/etc/php/php.ini \
@@ -60,8 +75,7 @@ COPY container-assets/set-permissions.sh /set-permissions.sh
 RUN chmod +x /startup.sh /set-permissions.sh
 
 
-RUN mkdir -p /app/code/web/sites/default/files \
-    && mkdir -p /app/code/web/sites/default/private \
+RUN ln -s /mnt/fileshare/public-files /app/code/web/sites/default/files \
     && mkdir -p /app/tmp \
     && mkdir -p /app/config
 

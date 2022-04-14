@@ -26,7 +26,7 @@ $databases['default']['default'] = [
 $settings['update_free_access'] = FALSE;
 $settings['allow_authorize_operations'] = FALSE;
 $settings['file_public_path'] = 'sites/default/files';
-$settings['file_private_path'] = '/app/code/web/sites/default/private';
+$settings['file_private_path'] = '/mnt/fileshare/private-files';
 $settings['config_sync_directory'] = $settings['file_private_path'] . "/config";
 $settings['file_temp_path'] = '/tmp';
 
@@ -36,3 +36,8 @@ if (!file_exists($salt_file)) {
     file_put_contents($salt_file, \Drupal\Component\Utility\Crypt::randomBytesBase64(55));
 }
 $settings['hash_salt'] = file_get_contents($salt_file);
+
+#Reverse proxy configuration that can be removed
+$settings['reverse_proxy'] = TRUE;
+$settings['reverse_proxy_addresses'] = [$_SERVER['REMOTE_ADDR']];
+$settings['reverse_proxy_trusted_headers'] = \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_ALL;

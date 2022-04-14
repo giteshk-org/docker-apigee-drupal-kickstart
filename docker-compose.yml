@@ -37,8 +37,7 @@ services:
       apigee-kickstart-database:
         condition: service_healthy
     volumes:
-    - drupal-public-files:/app/code/web/sites/default/files
-    - drupal-private-files:/app/code/web/sites/default/private
+    - drupal-files:/mnt/fileshare
   apigee-kickstart-database:
     image: mariadb:10.6
     volumes:
@@ -55,5 +54,4 @@ services:
       retries: 6
 volumes:
   apigee-kickstart-database-volume:
-  drupal-public-files:
-  drupal-private-files:
+  drupal-files:
