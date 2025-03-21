@@ -13,6 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use Google\Cloud\Storage\StorageClient;
+
+$storage = new StorageClient();
+$storage->registerStreamWrapper();
 
 $databases['default']['default'] = [
     'database' => getenv('DRUPAL_DATABASE_NAME'),
