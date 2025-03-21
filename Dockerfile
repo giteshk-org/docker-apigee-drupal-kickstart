@@ -74,7 +74,7 @@ RUN apt-get install -y nginx \
 
 COPY container-assets/drupal-nginx.conf /etc/nginx/sites-enabled/drupal-nginx.conf
 
-EXPOSE 80
+EXPOSE 8080
 
 RUN apt-get install -y supervisor
 COPY container-assets/supervisor.conf /etc/supervisor/conf.d/drupal-supervisor.conf
