@@ -25,8 +25,8 @@ $databases['default']['default'] = [
 
 $settings['update_free_access'] = FALSE;
 $settings['allow_authorize_operations'] = FALSE;
-$settings['file_public_path'] = 'sites/default/files';
-$settings['file_private_path'] = '/app/code/web/sites/default/private';
+$settings['file_public_path'] = getenv('DRUPAL_PUBLIC_FILE_PATH') ?? 'sites/default/files';
+$settings['file_private_path'] = getenv('DRUPAL_PRIVATE_FILE_PATH') ?? '/app/code/web/sites/default/private';
 $settings['config_sync_directory'] = $settings['file_private_path'] . "/config";
 $settings['file_temp_path'] = '/tmp';
 
