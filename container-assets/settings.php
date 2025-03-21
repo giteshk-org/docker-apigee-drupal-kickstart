@@ -33,7 +33,7 @@ $settings['file_public_path'] = getenv('DRUPAL_PUBLIC_FILE_PATH') ?? 'sites/defa
 $settings['file_private_path'] = getenv('DRUPAL_PRIVATE_FILE_PATH') ?? '/app/code/web/sites/default/private';
 $settings['config_sync_directory'] = $settings['file_private_path'] . "/config";
 $settings['file_temp_path'] = '/tmp';
-
+$settings['skip_permissions_hardening'] = TRUE;
 
 $salt_file = $settings['file_private_path'] . "/salt.txt";
 if (!file_exists($salt_file)) {
